@@ -1,0 +1,236 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+	<script src= "https://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src= "{% static 'js/bootstrap.min.js' %}" ></script>
+	<title></title>
+	
+</head>
+
+<body>
+<div class="container">
+
+
+ {% block navbar %}
+  <div class="bs-docs-section clearfix">
+   <div class="row">
+    <div class="col-lg-12">
+     <div class="bs-component">
+      <div class="navbar navbar-default">
+       <div class="container-fluid">
+        <div class="navbar-header">
+         <a div class="navbar-brand" href="#">G USER</a>
+        </div>
+       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+         <li class="dropdown">
+          
+          <ul class="dropdown-menu" role="menu">
+           
+            </li>
+            
+            </ul>
+             
+         </li>
+             
+         </ul>
+       <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown"><a id="authorize-button"  role="button"></a>
+        </li>  
+        <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Opciones<span class="coret"></span></a>
+         <ul class="dropdown-menu" role="menu">
+          <li> <a id="signout-button" role="button">Salir</a></li>
+           
+            </ul>
+           
+           </li>
+         </ul>
+        </div>
+       </div>
+    
+      </div>
+     
+     </div>
+
+    </div>
+      
+   </div>
+     
+  </div>
+  </div>
+
+  </div>﻿
+ 
+
+{% endblock %}
+	</div>
+	
+  {% load static %}
+
+
+{% block contenido %}
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>jQuery LinedTextDiv Plugin Demo</title>
+    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Orbitron' rel='stylesheet' type='text/css'>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="{% static 'js/linedTextEditor-jquery.js' %}"></script>
+    <link href="{% static 'css/linedTextEditor-jquery.css' %}" type="text/css" rel="stylesheet" />
+    <style>
+    html { min-height:45vh;}
+    body { font-family:'Orbitron'; background-color:#fffbfb;}
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+    <pre class="lined"></pre>
+
+    <script>
+            $(function() {
+                $(".lined").linedTextEditor();
+            });
+    </script>
+</body>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-36251023-1']);
+  _gaq.push(['_setDomainName', 'jqueryscript.net']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</html>
+
+
+{% endblock  %}
+
+{% block textEditor %}
+    <div class="compiler"></div>
+    
+{% endblock  %}
+
+   
+	 <script type="text/javascript">
+      // Client ID and API key from the Developer Console
+      var CLIENT_ID = '867439739475-8ktubim5ers4nr78mj61dd1s77fvc7m1.apps.googleusercontent.com';
+      var API_KEY = 'AIzaSyA0nccF2e0WHxrPhL1ibrprGqnT77jppmg';
+
+      // Array of API discovery doc URLs for APIs used by the quickstart
+      var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest"];
+
+      // Authorization scopes required by the API; multiple scopes can be
+      // included, separated by spaces.
+      var SCOPES = 'https://www.googleapis.com/auth/gmail.readonly';
+
+      var authorizeButton = document.getElementById('authorize-button');
+      var signoutButton = document.getElementById('signout-button');
+
+      /**
+       *  On load, called to load the auth2 library and API client library.
+       */
+      function handleClientLoad() {
+        gapi.load('client:auth2', initClient);
+      }
+
+      /**
+       *  Initializes the API client library and sets up sign-in state
+       *  listeners.
+       */
+      function initClient() {
+        gapi.client.init({
+          discoveryDocs: DISCOVERY_DOCS,
+          clientId: CLIENT_ID,
+          scope: SCOPES
+        }).then(function () {
+          // Listen for sign-in state changes.
+          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+          // Handle the initial sign-in state.
+          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+          authorizeButton.onclick = handleAuthClick;
+          signoutButton.onclick = handleSignoutClick;
+        });
+      }
+
+      /**
+       *  Called when the signed in status changes, to update the UI
+       *  appropriately. After a sign-in, the API is called.
+       */
+      function updateSigninStatus(isSignedIn) {
+        if (isSignedIn) {
+          authorizeButton.style.display = 'none';
+          signoutButton.style.display = 'block';
+          listLabels();
+        } else {
+          authorizeButton.style.display = 'block';
+          signoutButton.style.display = 'none';
+        }
+      }
+
+      /**
+       *  Sign in the user upon button click.
+       */
+      function handleAuthClick(event) {
+        gapi.auth2.getAuthInstance().signIn();
+      }
+
+      /**
+       *  Sign out the user upon button click.
+       */
+      function handleSignoutClick(event) {
+        gapi.auth2.getAuthInstance().signOut();
+        location.href ="http://localhost:8000"
+      }
+
+      /**
+       * Append a pre element to the body containing the given message
+       * as its text node. Used to display the results of the API call.
+       *
+       * @param {string} message Text to be placed in pre element.
+       */
+      function appendPre(message) {
+        var pre = document.getElementById('content');
+        var textContent = document.createTextNode(message + '\n');
+        pre.appendChild(textContent);
+      }
+
+      /**
+       * Print all Labels in the authorized user's inbox. If no labels
+       * are found an appropriate message is printed.
+       */
+      function listLabels() {
+        gapi.client.gmail.users.labels.list({
+          'userId': 'me'
+        }).then(function(response) {
+          
+
+          
+          
+        });
+      }
+
+    </script>
+
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+</body>
+</html>

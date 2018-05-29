@@ -1,0 +1,245 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+  
+	<script src= "https://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script src= "{% static 'js/bootstrap.min.js' %}" ></script>
+	<title></title>
+	
+</head>
+
+<body>
+<div class="container">
+
+
+ {% block navbar %}
+  <div class="bs-docs-section clearfix">
+   <div class="row">
+    <div class="col-lg-12">
+     <div class="bs-component">
+      <div class="navbar navbar-default">
+       <div class="container-fluid">
+        <div class="navbar-header">
+         <a div class="navbar-brand" href="#">COMPYLATON</a>
+        </div>
+       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+         <li class="dropdown">
+          <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">LOGIN<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+           <li><a href="{% url 'login' %}" role="button" >logear</a></li>
+           <li><a href="{% url 'perfil:registro' %}" role="button" >registrate</a></li>
+          </ul>
+            </li>
+            
+            </ul>
+             
+         </li>
+             
+         </ul>
+       <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown"><a id="authorize-button" ">Gmail Login</a>
+        </li>  
+        <li class="dropdown">
+         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Opciones<span class="coret"></span></a>
+         <ul class="dropdown-menu" role="menu">
+          <li> <a id="signout-button">Salir</a></li>
+           
+            </ul>
+           
+           </li>
+         </ul>
+        </div>
+       </div>
+    
+      </div>
+     
+     </div>
+
+    </div>
+      
+   </div>
+     
+  </div>
+  </div>
+
+  </div>﻿
+ 
+
+{% endblock %}
+
+	</div>
+
+  {% block contenido %}
+
+
+          <link rel="stylesheet" href="{% static 'css/estadis.css' %}">
+          <script src= "https://code.jquery.com/jquery-1.10.2.min.js"></script>  
+          <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+          <script type="text/javascript">
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+       
+            function drawChart() {
+       
+              var lenguaje = google.visualization.arrayToDataTable([
+                ['Lenguaje', 'Número de ejecuciones'],
+                ['Python',213],
+                ['Java',  454],
+                ['c++',   454],
+                ['c#', 254],
+                ['php',    75]
+              ]);
+       
+              var tipo = google.visualization.arrayToDataTable([
+                ['Tipo de lenguaje', 'Número de ejecuciones'],
+                ['Compilado', 5645],
+                ['Interpretado',  5454]
+              ]);
+       
+              var options = {
+                title: 'Lenguajes más usados'
+              };
+
+              var options = {
+                title: 'Compilado e interpretado'
+              };
+       
+              var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+              var chart1 = new google.visualization.PieChart(document.getElementById('piechart1'));
+       
+              chart.draw(lenguaje, options);
+              chart1.draw(tipo, options);
+            }
+          </script>
+      <body>
+        <section>
+          
+        
+         <div class="stadict">
+          <div class="caja"></div>
+          <div id="piechart" style="width:500px; height: 400px; display: inline-block" ></div>
+          <div id="piechart1" style="width: 500px; height: 400px;" ></div>
+        </div>
+        </section>
+
+      </body>
+       
+        
+{% endblock  %}
+
+
+
+	
+
+   
+	 <script type="text/javascript">
+      // Client ID and API key from the Developer Console
+      var CLIENT_ID = '867439739475-8ktubim5ers4nr78mj61dd1s77fvc7m1.apps.googleusercontent.com';
+      var API_KEY = 'AIzaSyA0nccF2e0WHxrPhL1ibrprGqnT77jppmg';
+
+      // Array of API discovery doc URLs for APIs used by the quickstart
+      var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/gmail/v1/rest"];
+
+      // Authorization scopes required by the API; multiple scopes can be
+      // included, separated by spaces.
+      var SCOPES = 'https://www.googleapis.com/auth/gmail.readonly';
+
+      var authorizeButton = document.getElementById('authorize-button');
+      var signoutButton = document.getElementById('signout-button');
+
+      /**
+       *  On load, called to load the auth2 library and API client library.
+       */
+      function handleClientLoad() {
+        gapi.load('client:auth2', initClient);
+      }
+
+      /**
+       *  Initializes the API client library and sets up sign-in state
+       *  listeners.
+       */
+      function initClient() {
+        gapi.client.init({
+          discoveryDocs: DISCOVERY_DOCS,
+          clientId: CLIENT_ID,
+          scope: SCOPES
+        }).then(function () {
+          // Listen for sign-in state changes.
+          gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+          // Handle the initial sign-in state.
+          updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+          authorizeButton.onclick = handleAuthClick;
+          signoutButton.onclick = handleSignoutClick;
+        });
+      }
+
+      /**
+       *  Called when the signed in status changes, to update the UI
+       *  appropriately. After a sign-in, the API is called.
+       */
+      function updateSigninStatus(isSignedIn) {
+        if (isSignedIn) {
+          authorizeButton.style.display = 'none';
+          signoutButton.style.display = 'block';
+          listLabels();
+        } else {
+          authorizeButton.style.display = 'block';
+          signoutButton.style.display = 'none';
+        }
+      }
+
+      /**
+       *  Sign in the user upon button click.
+       */
+      function handleAuthClick(event) {
+        gapi.auth2.getAuthInstance().signIn();
+      }
+
+      /**
+       *  Sign out the user upon button click.
+       */
+      function handleSignoutClick(event) {
+        gapi.auth2.getAuthInstance().signOut();
+      }
+
+      /**
+       * Append a pre element to the body containing the given message
+       * as its text node. Used to display the results of the API call.
+       *
+       * @param {string} message Text to be placed in pre element.
+       */
+      function appendPre(message) {
+        var pre = document.getElementById('content');
+        var textContent = document.createTextNode(message + '\n');
+        pre.appendChild(textContent);
+      }
+
+      /**
+       * Print all Labels in the authorized user's inbox. If no labels
+       * are found an appropriate message is printed.
+       */
+      function listLabels() {
+        gapi.client.gmail.users.labels.list({
+          'userId': 'me'
+        }).then(function(response) {
+          
+          location.href ="http://localhost:8000/registrado/"
+          
+        });
+      }
+
+    </script>
+
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+</body>
+</html>
